@@ -27,7 +27,7 @@ def find_food_path(board):
 # return the path to the best food
 ```
 
-TODO:
+#### TODO:
 1. if there are more than 2 snakes, we need to make ourself long enough
 ```
 if snakes > 2:
@@ -42,12 +42,12 @@ else:
 		kill_others()
 ```
 
-2. Chase tail
-TODO: follow our tail or their tail <br>
+2. Chase tail <br>
+follow our tail or their tail <br>
 
 ## Irene's Logic
 1. use heuristic to get the senario that has the highest score, then make a move <br>
-TODO:
-    * how to give weights to snakes? food?
-	* when health is low, increase the weight of food
-	* what is the low health threshold?
+#### TODO:
+1. how to give weights to snakes? food?
+2. when health is low, increase the weight of food
+3. what is the low health threshold?
