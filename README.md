@@ -1,43 +1,59 @@
-# A Simple [Battlesnake](http://play.battlesnake.com) Written in Python
+# tenlaRAN Battlesnake
+## A [Battlesnake](http://play.battlesnake.com) written in Python.
 
-This is a basic implementation of the [Battlesnake API](https://docs.battlesnake.com/references/api). It's a great starting point for anyone wanting to program their first Battlesnake using Python. It comes ready to use with [Repl.it](https://repl.it) and provides instructions below for getting started. It can also be deployed to [Heroku](https://heroku.com), or any other cloud provider you'd like.
+## Rough Strategy
+The priority strategy is defensive.
 
-### Technologies Used
+The snake starts by building a grid of the board based on the data. We also consider any spaces the other snakes could move next turn as dangerous.
 
-* [Python3](https://www.python.org/)
-* [CherryPy](https://cherrypy.org/)
+If no goals are suitable (i.e. we're not closest to any food, or getting to the next food would lead to the dead-end), then we just take the shortest path to our own tail, allowing us to loop "forever" until a goal spawns that satisfies our conditions. If we can't get to our tail, I think we just make a random move that isn't into a wall (we probably ran out of time). Another solution would be to try to path to another snake's tail, and just follow them until a goal appears or our own tail becomes visible.
+### Ideas
+* Implement flood filling algorithm to find the next move that would lead to a wider space
+* Use A* to find the next closest food when the health is below range
 
+# Battlesnake-python
 
-## Prerequisites
+This is a basic implementation of the [Battlesnake API](https://docs.battlesnake.com/snake-api). It's a great starting point for anyone wanting to program their first Battlesnake using Python. It comes ready to deploy to [Heroku](https://heroku.com), although you can use other cloud providers if you'd like.
 
+### Technologies
+
+This Battlesnake uses [Python 3.7](https://www.python.org/), [CherryPy](https://cherrypy.org/), and [Heroku](https://heroku.com).
+
+### Prerequisites
+
+* [GitHub Account](https://github.com/) and [Git Command Line](https://www.atlassian.com/git/tutorials/install-git)
+* [Heroku Account](https://signup.heroku.com/) and [Heroku Command Line](https://devcenter.heroku.com/categories/command-line)
 * [Battlesnake Account](https://play.battlesnake.com)
-* [Repl.it Account](https://repl.it)
-* [GitHub Account](https://github.com) (Optional)
 
-## Running Your Battlesnake on [Repl.it](https://repl.it)
+## Deploying Your First Battlesnake
 
-[![Run on Repl.it](https://repl.it/badge/github/BattlesnakeOfficial/starter-snake-python)](https://repl.it/github/BattlesnakeOfficial/starter-snake-python)
+1. [Fork this repo](https://github.com/BattlesnakeOfficial/starter-snake-python/fork) into your GitHub Account.
 
-1. Login to your [Repl.it](https://repl.it) account.
-
-2. Click the 'Run on Repl.it' button above, or visit the following URL: https://repl.it/github/BattlesnakeOfficial/starter-snake-python.
-
-3. You should see your Repl being initialized - this might take a few moments to complete.
-
-4. Once your Repl is ready to run, click `Run ▶️` at the top of the screen. You should see CherryPy (and any other dependencies) being installed. Once installation is complete, your Battlesnake server will start and you should see the following:
-
-    ```
-    Starting Battlesnake Server...
-    ENGINE Serving on http://0.0.0.0:8080
+2. [Clone your forked repo](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) into your local environment.
+    ```shell
+    git clone git@github.com:[YOUR-GITHUB-USERNAME]/starter-snake-python.git
     ```
 
-5. Above the terminal window you'll see the live output from your Battlesnake server, including its URL. That URL will be the URL used to create your Battlesnake in the next step. If you visit that URL in your browser, you should see text similar to this:
-
+3. [Create a new Heroku app](https://devcenter.heroku.com/articles/creating-apps) to run your Battlesnake.
+    ```shell
+    heroku create [YOUR-APP-NAME]
     ```
-    {"apiversion": "1", "author": "", "color": "#888888", "head": "default", "tail": "default"}
+
+4. [Deploy your Battlesnake code to Heroku](https://devcenter.heroku.com/articles/git#deploying-code).
+    ```shell
+    git push heroku master
     ```
 
-This means your Battlesnake is running correctly on Repl.it.
+5. Open your new Heroku app in your browser.
+    ```shell
+    heroku open
+    ```
+    If everything was successful, you should see the following text:
+    ```
+    Your Battlesnake is alive!
+    ```
+
+6. Optionally, you can view your server logs using the [Heroku logs command](https://devcenter.heroku.com/articles/logging#log-retrieval) `heroku logs --tail`. The `--tail` option will show a live feed of your logs in real-time.
 
 **At this point your Battlesnake is live and ready to enter games!**
 
@@ -45,17 +61,17 @@ This means your Battlesnake is running correctly on Repl.it.
 
 ## Registering Your Battlesnake and Creating Your First Game
 
-1. Sign in to [play.battlesnake.com](https://play.battlesnake.com/login/).
+1. Log in to [play.battlesnake.com](https://play.battlesnake.com/login/).
 
-2. Go [here to create a new Battlesnake](https://play.battlesnake.com/account/snakes/create/). Give it a meaningful name and complete the form using the URL for your Repl from above.
+2. [Create a new Battlesnake](https://play.battlesnake.com/account/snakes/create/). Give it a name and complete the form using the URL for your Heroku app.
 
 3. Once your Battlesnake has been saved you can [create a new game](https://play.battlesnake.com/account/games/create/) and add your Battlesnake to it. Type your Battlesnake's name into the search field and click "Add" to add it to the game. Then click "Create Game" to start the game.
 
 4. You should see a brand new Battlesnake game with your Battlesnake in it! Yay! Press "Play" to start the game and watch how your Battlesnake behaves. By default your Battlesnake should move randomly around the board.
 
-5. Optionally, watch your Repl logs while the game is running to see your Battlesnake receiving API calls and responding with its moves.
+5. Optionally, open your [Heroku logs](https://devcenter.heroku.com/articles/logging#log-retrieval) while the game is running to see your Battlesnake receiving API calls and responding with its moves.
 
-Repeat steps 3 and 4 every time you want to see how your Battlesnake behaves. It's common for Battlesnake developers to repeat these steps often as they make their Battlesnake smarter. You can also use the "Create Rematch" button to quickly start a new game using the same Battlesnakes and configuration.
+Repeat steps 3 and 4 every time you want to see how your Battlesnake behaves. It's common for Battlesnake developers to repeat these steps often as they make their Battlesnake smarter.
 
 **At this point you should have a registered Battlesnake and be able to create games!**
 
@@ -63,67 +79,64 @@ Repeat steps 3 and 4 every time you want to see how your Battlesnake behaves. It
 
 ## Customizing Your Battlesnake
 
-Now you're ready to start customizing your Battlesnake's appearance and behavior.
+Now you're ready to start customizing your Battlesnake and improving its algorithm.
 
 ### Changing Appearance
 
-Locate the `index` function inside [server.py](server.py#L15). At the end of that function tou should see a line that looks like this:
-
+Locate the `start` function inside [server.py](server.py#L26). You should see a line that looks like this:
 ```python
-return {
-    "apiversion": "1",
-    "author": "",
-    "color": "#888888",
-    "head": "default",
-    "tail": "default",
-}
+return {"color": "#888888", "headType": "regular", "tailType": "regular"}
 ```
 
-This function is called by the game engine periodically to make sure your Battlesnake is healthy, responding correctly, and to determine how your Battlesnake will appear on the game board. See [Battlesnake Personalization](https://docs.battlesnake.com/references/personalization) for how to customize your Battlesnake's appearance using these values.
-
-Whenever you update these values, go to the page for your Battlesnake and select 'Refresh Metadata' from the option menu. This will update your Battlesnake to use your latest configuration and those changes should be reflected in the UI as well as any new games created.
+This function is called every time a new game starts. Your response determines what your Battlesnake will look like in that game. See [Customizing Your Battlesnake](https://docs.battlesnake.com/snake-customization) for how to customize your Battlesnake's appearance using these values.
 
 ### Changing Behavior
 
 On every turn of each game your Battlesnake receives information about the game board and must decide its next move.
 
-Locate the `move` function inside [server.py](server.py#L37). Possible moves are "up", "down", "left", or "right". To start your Battlesnake will choose a move randomly. Your goal as a developer is to read information sent to you about the board (available in the `data` variable) and decide where your Battlesnake should move next.
+Locate the `move` function inside [server.py](server.py#L37). You should see code that looks like this:
+```python
+data = cherrypy.request.json
+# Choose a random direction to move in
+possible_moves = ["up", "down", "left", "right"]
+move = random.choice(possible_moves)
+return {"move": move}
+```
 
-See the [Battlesnake Game Rules](https://docs.battlesnake.com/references/rules) for more information on playing the game, moving around the board, and improving your algorithm.
+Possible moves are "up", "down", "left", or "right". To start your Battlesnake will choose a move randomly. Your goal as a developer is to read information sent to you about the board (available in the `data` variable) and make an intelligent decision about where your Battlesnake should move next. 
+
+See the [Battlesnake Rules](https://docs.battlesnake.com/rules) for more information on playing the game, moving around the board, and improving your algorithm.
 
 ### Updating Your Battlesnake
 
-After making changes to your Battlesnake, you can restart your Repl to have the change take effect (or in many cases your Repl will restart automatically).
+After making changes, commit them using git and deploy your changes to Heroku.
+```shell
+git add .
+git commit -m "update my battlesnake's appearance"
+git push heroku master
+```
 
-Once the Repl has restarted you can [create a new game](https://play.battlesnake.com/account/games/create/) with your Battlesnake to watch your latest changes in action.
+Once Heroku has updated you can [create a new game](https://play.battlesnake.com/account/games/create/) with your Battlesnake to view your latest changes in action.
 
-**At this point you should feel comfortable making changes to your code and starting new Battlesnake games to test those changes!**
+**At this point you should feel comfortable making changes to your code and deploying those changes to Heroku!**
 
 
 
 ## Developing Your Battlesnake Further
 
-Now you have everything you need to start making your Battlesnake super smart!
+Now you have everything you need to start making your Battlesnake super smart! Here are a few more helpful tips:
 
-### Early Development Goals
+* Keeping your logs open in a second window (using `heroku logs --tail`) is helpful for watching server activity and debugging any problems with your Battlesnake.
 
-Here are some simple goals to help you develop your Battlesnake early on. Completing these will make your Battlesnake competitive against other Battlesnakes in multi-player games.
+* You can use the Python [print function](https://docs.python.org/3.7/library/functions.html#print) to output information to your server logs. This is very useful for debugging logic in your code during Battlesnake games.
 
-- [ ] Avoid colliding with walls
-- [ ] Avoid colliding with yourself
-- [ ] Try to move towards food
-- [ ] Avoid colliding with other snakes
-
-Once you have completed these steps you'll be ready to compete live against other Battlesnakes and start exploring and implementing more complex strategies.
-
-
-### Helpful Tips
-
-* Keeping your Repl open in a second window while games are running is helpful for watching server activity and debugging any problems with your Battlesnake.
-
-* You can use the Python [print function](https://docs.python.org/3.8/library/functions.html#print) to output information to your server logs. This is very useful for debugging logic in your code during Battlesnake games.
-
-* Review the [Battlesnake API Docs](https://docs.battlesnake.com/references/api) to learn what information is provided with each command.
+* Review the [Battlesnake API Docs](https://docs.battlesnake.com/snake-api) to learn what information is provided with each command. You can also output the data to your logs:
+    ```python
+    def move(self):
+        data = cherrypy.request.json
+        print(data)
+        return {"move": "up"}
+    ```
 
 * When viewing a Battlesnake game you can pause playback and step forward/backward one frame at a time. If you review your logs at the same time, you can see what decision your Battlesnake made on each turn.
 
@@ -137,17 +150,9 @@ Arenas will regularly create new games and rank Battlesnakes based on their resu
 
 
 
-## (Optional) Using a Cloud Provider
-
-As your Battlesnake gets more complex, it might make sense to move it to a dedicated hosting provider such as Heroku or AWS. We suggest choosing a platform you're familiar with, or one you'd be interested in learning more about.
-
-If you have questions or ideas, our developer community on [Slack](https://play.battlesnake.com/slack) and [Discord](https://play.battlesnake.com/discord) will be able to help out.
-
-
-
 ## (Optional) Running Your Battlesnake Locally
 
-Eventually you might want to run your Battlesnake server locally for faster testing and debugging. You can do this by installing [Python 3.8](https://www.python.org/downloads/) and running:
+Eventually you might want to run your Battlesnake server locally for faster testing and debugging. You can do this by installing [Python 3.7](https://www.python.org/downloads/) and running:
 
 ```shell
 python server.py
@@ -163,4 +168,4 @@ python server.py
 
 All documentation is available at [docs.battlesnake.com](https://docs.battlesnake.com), including detailed Guides, API References, and Tips.
 
-You can also join the Battlesnake Developer Community on [Slack](https://play.battlesnake.com/slack) and [Discord](https://play.battlesnake.com/discord). We have a growing community of Battlesnake developers of all skill levels wanting to help everyone succeed and have fun with Battlesnake :)
+You can also join the [Battlesnake Developer Community on Slack](https://play.battlesnake.com/slack). We have a growing community of Battlesnake developers of all skill levels wanting to help everyone succeed and have fun with Battlesnake :)
